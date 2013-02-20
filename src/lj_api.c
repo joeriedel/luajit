@@ -72,7 +72,7 @@ static TValue *stkindex2adr(lua_State *L, int idx)
 static GCtab *getcurrenv(lua_State *L)
 {
   GCfunc *fn = curr_func(L);
-  return (fn && fn->c.gct == ~LJ_TFUNC) ? tabref(fn->c.env) : tabref(L->env);
+  return fn->c.gct == ~LJ_TFUNC ? tabref(fn->c.env) : tabref(L->env);
 }
 
 /* -- Miscellaneous API functions ----------------------------------------- */

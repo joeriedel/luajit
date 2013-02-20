@@ -14,7 +14,7 @@
 @if not defined INCLUDE goto :FAIL
 
 @setlocal
-@set LJCOMPILE=cl /nologo /c /O2 /W3 /D_CRT_SECURE_NO_DEPRECATE
+@set LJCOMPILE=cl /nologo /c /W3 /D_CRT_SECURE_NO_DEPRECATE
 @set LJLINK=link /nologo
 @set LJMT=mt /nologo
 @set LJLIB=lib /nologo
@@ -61,10 +61,10 @@ buildvm -m vmdef -o jit\vmdef.lua %ALL_LIB%
 buildvm -m folddef -o lj_folddef.h lj_opt_fold.c
 @if errorlevel 1 goto :BAD
 
-@if "%1" neq "debug" set LJCOMPILE=%LJCOMPILE% /MD
+@if "%1" neq "debug" set LJCOMPILE=%LJCOMPILE% /MD /O2 /MP /O2 /Oi /Oy
 @if "%1" neq "debug" goto :NODEBUG
 @shift
-@set LJCOMPILE=%LJCOMPILE% /Zi /MDd
+@set LJCOMPILE=%LJCOMPILE% /D DEBUG /Zi /MDd /Od /MP /Od /Oy-
 @set LJLINK=%LJLINK% /debug
 :NODEBUG
 @if "%1"=="amalg" goto :AMALGDLL

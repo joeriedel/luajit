@@ -124,14 +124,24 @@
 #define LUALIB_API	LUA_API
 
 /* Support for internal assertions. */
+#if defined(DEBUG)
+#define LUA_USE_APICHECK
+#define LUA_USE_ASSERT
+#endif
+
 #if defined(LUA_USE_ASSERT) || defined(LUA_USE_APICHECK)
-#include <assert.h>
+void __rad_assert(
+	const char *message,
+	const char *file,
+	const char *function,
+	unsigned int line
+);
 #endif
 #ifdef LUA_USE_ASSERT
-#define lua_assert(x)		assert(x)
+#define lua_assert(x) (void)((!!(x))||(__rad_assert(#x, __FILE__, __FUNCTION__, __LINE__),0))
 #endif
 #ifdef LUA_USE_APICHECK
-#define luai_apicheck(L, o)	{ (void)L; assert(o); }
+#define luai_apicheck(L, o) lua_assert(o)
 #else
 #define luai_apicheck(L, o)	{ (void)L; }
 #endif
